@@ -11,7 +11,7 @@ namespace Restaurant365Test
         {
             Calculator c = new Calculator();
             //int result = c.Add("1\n2,3");
-            int result = c.Add("//;\n1,2;3;4;10000");
+            int result = c.Add("//[;][**]\n1;2**3**4**10000");
             Console.Write(result);
         }
 
@@ -81,7 +81,7 @@ namespace Restaurant365Test
         private string[] getDelimitersFromString(string delimString)
         {
             List<string> delimList = new List<string>(new string[] { "\n", "," });
-            MatchCollection delimMatches = Regex.Matches(delimString, @"(?<=\/\/)(.*?)(?=[\n])");
+            MatchCollection delimMatches = Regex.Matches(delimString, @"(?<=\[)(.*?)(?=\])");
             foreach (Match m in delimMatches)
             {
                 delimList.Add(m.Value);
