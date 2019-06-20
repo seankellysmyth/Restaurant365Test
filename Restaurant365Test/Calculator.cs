@@ -10,7 +10,7 @@ namespace Restaurant365Test
         {
             Calculator c = new Calculator();
             //int result = c.Add("1\n2,3");
-            int result = c.Add("//;\n1;2;3");
+            int result = c.Add("//;\n1,\n2;3");
             Console.Write(result);
         }
 
@@ -18,10 +18,6 @@ namespace Restaurant365Test
         {
             int[] intArray = getIntegersFromString(numbers);
             int sum = 0;
-            if (intArray.Length > 3)
-            {
-                throw new ArgumentException("Too many numbers supplied");
-            }
             foreach(int n in intArray)
             {
                 sum += n;
@@ -31,10 +27,18 @@ namespace Restaurant365Test
 
         private int[] getIntegersFromString(string myString)
         {
-
-            //string[] delimArr = getDelimitersFromString(myString.Substring(0, myString.IndexOf("\n")));
             string[] delimArr = getDelimitersFromString(myString);
             string numString = getNumString(myString);
+            if (numString.Contains(",\n"))
+            {
+                throw new ArgumentException(@"Input containing ,\n is not allowed");
+            }
+            //NOT SURE WHICH SCENARIO YOU MEANT, SO INCLUDING BOTH
+            //if(numString == "1,\n")
+            //{
+            //    throw new ArgumentException("Input 1,\n is not allowed");
+            //}
+
             //get only the numbers after \n
             string[] strArray = numString.Split(delimArr, StringSplitOptions.None);                     
             List<int> intList = new List<int>();
@@ -58,7 +62,6 @@ namespace Restaurant365Test
                 delimList.Add(m.Value);
             }
             return delimList.ToArray();
-            //if nothing supplied, default to \n and ,
         }
 
         private string getNumString(string rawString)
