@@ -11,7 +11,7 @@ namespace Restaurant365Test
         {
             Calculator c = new Calculator();
             //int result = c.Add("1\n2,3");
-            int result = c.Add("//;\n1,-2;-3");
+            int result = c.Add("//;\n1,2;3;4;10000");
             Console.Write(result);
         }
 
@@ -49,6 +49,7 @@ namespace Restaurant365Test
             }
             //check to see if there are any negative values.  If so, throw exception.
             checkNegVals(intList);
+            intList = ignoreLargeValues(intList);
 
             if (strArray.Length == 0)
             {
@@ -69,6 +70,12 @@ namespace Restaurant365Test
                 }
                 throw new ArgumentException(errorMessage);
             }
+        }
+
+        List<int> ignoreLargeValues(List<int> completeList)
+        {
+            completeList.RemoveAll(i => i > 1000);
+            return completeList;
         }
 
         private string[] getDelimitersFromString(string delimString)
