@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace Restaurant365Test
@@ -10,7 +11,7 @@ namespace Restaurant365Test
         {
             Calculator c = new Calculator();
             //int result = c.Add("1\n2,3");
-            int result = c.Add("//;\n1,\n2;3");
+            int result = c.Add("//;\n1,-2;-3");
             Console.Write(result);
         }
 
@@ -42,15 +43,32 @@ namespace Restaurant365Test
             //get only the numbers after \n
             string[] strArray = numString.Split(delimArr, StringSplitOptions.None);                     
             List<int> intList = new List<int>();
-            foreach(string s in strArray)
+            foreach (string s in strArray)
             {
                 intList.Add(Int32.Parse(s == "" ? "0" : s));
             }
-            if(strArray.Length == 0)
+            //check to see if there are any negative values.  If so, throw exception.
+            checkNegVals(intList);
+
+            if (strArray.Length == 0)
             {
                 return new int[]{ 0 };
             }
             return intList.ToArray();
+        }
+
+        private void checkNegVals(List<int> values)
+        {
+            int[] negativeNumbers = values.Where(i => i < 0).ToArray();
+            if (negativeNumbers.Length > 0)
+            {
+                string errorMessage = "Negatives not allowed.";
+                foreach (int i in negativeNumbers)
+                {
+                    errorMessage += "\n" + i;
+                }
+                throw new ArgumentException(errorMessage);
+            }
         }
 
         private string[] getDelimitersFromString(string delimString)
